@@ -1,0 +1,49 @@
+<doctype html>
+  <html>
+  <head>
+  <title> Invoice Generator - New Invoice</title>
+  <h2> New Invoice </h2>
+   <script type=text/javascript src="{{url_for('static', filename='jquery.js')}}"></script>
+
+
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+   <!-- Latest compiled and minified CSS -->
+
+<script src="{{url_for('static', filename='js/form.js')}}"></script>
+  </head>
+  <form  method = "post" name="clientForm" id=invoiceForm>
+      <dl>
+        {{ invoice_form.client_name }}
+        {{ invoice_form.issue_date }}
+        {{ invoice_form.due_date }}
+      </dl>
+    <p><input type=submit name="btn" value="Save">
+  </form>
+
+  <body>
+  <div class="container">
+  	<br><br><br><br>
+  	<form class="form-inline" id="itemForm">
+      <div class="form-group">
+  	    <label class="sr-only" for="invoiceId">invoiceId</label>
+  	    <input type="text" class="form-control" id="invoiceId" value = "{{ invoice_id }}">
+  	  </div>
+  	  <div class="form-group">
+  	    <label class="sr-only" for="productInput">product</label>
+  	    <input type="text" class="form-control" id="productInput" placeholder="Product">
+  	  </div>
+  	  <div class="form-group">
+  	    <label class="sr-only" for="quantityInput">quantity</label>
+  	    <input type="text" class="form-control" id="quantityInput" placeholder="Quantity">
+  	  </div>
+      <div class="form-group">
+        <label class="sr-only" for="priceInput">price</label>
+        <input type="text" class="form-control" id="priceInput" placeholder="Price">
+      </div>
+  	  <button type="submit" name="item" class="btn btn-default">Submit</button>
+  	</form>
+  	<br>
+  </div>
+  </body>
+  </html>

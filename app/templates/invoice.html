@@ -1,0 +1,22 @@
+<doctype html>
+  <h1> Invoice </h1>
+
+  <form method="get">
+
+  <h2>{{ client_name }}</h2>
+
+
+  <h3>Invoice ID:</h3> {{ invoice_id }}
+
+  <h3> Date of issue: {{ issue_date }} </h3>
+
+  <h3> To be paid by: {{ due_date }} </h3>
+
+  {{ table }}
+
+  <h3>Total exc VAT: £{{ amount_bt }}</h3>
+
+  <h2>To be paid: £{{ amount_at }}</h2>
+
+
+  </form>

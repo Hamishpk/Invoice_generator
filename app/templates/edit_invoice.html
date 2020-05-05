@@ -1,0 +1,19 @@
+<doctype html>
+  <title> Invoice Generator - New Invoice</title>
+  <h2> New Invoice </h2>
+
+  <form method="get">
+    <dl>
+    <p> Invoice ID: {{ invoice_id }} </p>
+    </dl>
+  </form>
+  <form  method = "post" name="clientForm">
+      <dl>
+        {{ form.client_name }}
+        {{ form.issue_date }}
+        {{ form.due_date }}
+      </dl>
+      <p><input type=submit name="btn" value="Save">
+  </form>
+
+  {{ table }}

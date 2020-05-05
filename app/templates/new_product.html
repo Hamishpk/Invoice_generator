@@ -1,0 +1,14 @@
+<doctype html>
+  <title> Invoice Generator - New Product</title>
+  <h2> New Product </h2>
+
+  {% from "_formhelpers.html" import render_field %}
+  <form method = post>
+      <dl>
+        {{ render_field(form.product_id) }}
+        {{ render_field(form.description) }}
+        {{ render_field(form.price) }}
+      </dl>
+      <p><input type=submit value=Submit>
+
+  </form>
