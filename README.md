@@ -30,21 +30,21 @@ Install Python 3+
 
 Install pip (Linux)
 
-* 'code' sudo apt install python3-pip
+* `code` sudo apt install python3-pip
 
 Clone this repository
 
-* 'code' git clone https://github.com/Hamishpk/Invoice_generator.git
+* `code` git clone https://github.com/Hamishpk/Invoice_generator.git
 
-* 'code' cd invoice_generator
+* `code` cd invoice_generator
 
 Activate your virtualenv.
 
-* 'code' python3 -m venv <env name of your choice>
+* `code` python3 -m venv <env name of your choice>
 
 Install packages from requirements.txt
 
-* 'code' pip install -r requirements.txt
+* `code` pip install -r requirements.txt
 
 
 ## Testing
