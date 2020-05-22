@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	console.log('hello')
+	var table = null;
   $("#invoice button").click(function (ev) {
   ev.preventDefault()
   if ($(this).attr("value") == "save") {
@@ -8,12 +8,13 @@ $(document).ready(function(){
         client_name : $('#clientName').val(),
 			  issue_date : $('#issueDate').val(),
 			  due_date : $('#dueDate').val(),
+				invoice_id : $('#invoiceId').val(),
       },
       type : 'POST',
-      url : '/add_invoice'
+      url : '/save_invoice'
     })
 		.done(function(data){
-			console.log('invoice added')
+			window.location = "/";
 		})
   }
   if ($(this).attr("value") == "item") {
@@ -28,7 +29,8 @@ $(document).ready(function(){
 			url : '/process'
 		})
     .done(function(data){
-      console.log('item added')
+      $("#resultsTable").html(data.my_table);
+			table = $("#a_nice_table").DataTable();
     })
   }
 

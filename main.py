@@ -3,8 +3,9 @@ from app.__init__ import init_db, db_session
 from app.tables import Products, Invoices, Items, ItemForInvoice
 from app.forms import ProductForm, ClientForm, ItemForm
 from app.forms import InvoiceForm, PopulateInvoice
-from flask import flash, render_template, request, redirect, jsonify
+from flask import flash, render_template, request, redirect, jsonify, url_for
 from app.models import Product, Client, Invoice, Item
+import uuid
 
 
 init_db(db)
@@ -14,86 +15,10 @@ def index():
     """Displays home screen invoice table"""
     qry_invoices = db_session.query(Invoice)
     results = qry_invoices.all()
-    table1 = Invoices(results)
+    table = Invoices(results)
 
-    qry = db_session.query(Item)
-    results = qry.all()
-    table2 = Items(results)
+    return render_template('index.html', table = table)
 
-    return render_template('index.html', table1 = table1, table2 = table2)
-
-
-@app.route('/add_product', methods=['GET', 'POST'])
-def new_product():
-    """
-    New product  button
-    """
-    form = ProductForm(request.form)
-    if request.method == 'POST' and form.validate():
-        product = Product()
-        save_changes(product, form, new=True)
-        flash('Producted added')
-        return redirect('/')
-
-    return render_template('new_product.html', form = form)
-
-def save_changes(product, form, new=False):
-    """
-    Helper function to commit product information to databae.
-    -----
-    Parameters: Type
-    product: Product
-    form: ProductForm
-    new: Boolean
-    -----
-    Commits or updates line in product table
-    -----
-    Returns - Nothing
-    """
-    product.product_id = form.product_id.data
-    product.description = form.description.data
-    product.price = form.price.data
-
-    if new:
-        db_session.add(product)
-
-    db_session.commit()
-
-@app.route('/add_client', methods=['GET', 'POST'])
-def new_client():
-    """
-    Adds new client
-    """
-    form = ClientForm(request.form)
-    if request.method == 'POST' and form.validate():
-        client = Client()
-        save_client_changes(client, form, new=True)
-        flash('Client added')
-        return redirect('/')
-
-    return render_template('new_client.html', form = form)
-
-def save_client_changes(client, form, new=False):
-
-    """
-    Helper function to commit client information to database.
-    -----
-    Parameters: Type
-    client - Client
-    form - ClientForm
-    new - Boolean
-    -----
-    Commits or updates line in client table
-    -----
-    Returns - Nothing
-    """
-    client.name = form.name.data
-    client.address = form.address.data
-
-    if new:
-        db_session.add(client)
-
-    db_session.commit()
 
 @app.route('/add_invoice', methods=['GET', 'POST'])
 def new_invoice():
@@ -103,27 +28,28 @@ def new_invoice():
     CURRENTLY NEEDS MODIFYING ONCE FRONT END IS COMPLETE
     -----
     """
-    invoice_form = InvoiceForm(request.form)
-    invoice = Invoice()
-    invoice_id = invoice.invoice_id
-
-    if request.method == 'POST':
-        invoice.client_name = request.form['client_name']
-        invoice.issue_date = request.form['issue_date']
-        invoice.due_date = request.form['due_date']
-        total = 0
-        qry = db_session.query(Item).filter(Item.invoice_id == invoice.invoice_id)
-        for i in qry:
-            total += i.total_price
-        invoice.amount_bt = total
-        invoice.amount_at = round(float(invoice.amount_bt) * 1.2, 2)
-
-        db_session.add(invoice)
-        db_session.commit()
-        return redirect('/')
+    invoice_id = str(uuid.uuid4())
 
     return render_template('add_invoice.html', invoice_id = invoice_id)
 
+@app.route('/save_invoice', methods=['POST'])
+def save_invoice():
+    invoice = Invoice()
+    invoice.invoice_id = request.form['invoice_id']
+    invoice.client_name = request.form['client_name']
+    invoice.issue_date = request.form['issue_date']
+    invoice.due_date = request.form['due_date']
+    total = 0
+    qry = db_session.query(Item).filter(Item.invoice_id == invoice.invoice_id)
+    results = qry.all()
+    for i in results:
+        total += i.total_price
+    invoice.amount_bt = total
+    invoice.amount_at = round(float(invoice.amount_bt) * 1.2, 2)
+
+    db_session.add(invoice)
+    db_session.commit()
+    return redirect(url_for('index'))
 
 @app.route('/process', methods=['GET', 'POST'])
 def process():
@@ -142,7 +68,6 @@ def process():
     #if statement to check price is none and if so pull stock price from db
     item_price = request.form['price']
     total_price = round(float(quantity)*float(item_price))
-    print(invoice_id, product, quantity, item_price)
     item.invoice_id = invoice_id
     item.item = product
     item.quantity = quantity
@@ -153,9 +78,10 @@ def process():
 
     qry = db_session.query(Item).filter(Item.invoice_id == invoice_id)
     results = qry.all()
+    print(invoice_id)
     table = Items(results)
 
-    return jsonify(table = table)
+    return jsonify(my_table = table.__html__())
 
 def save_invoice_changes(invoice, form, new=False):
 
