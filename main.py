@@ -14,9 +14,13 @@ def index():
     """Displays home screen invoice table"""
     qry_invoices = db_session.query(Invoice)
     results = qry_invoices.all()
-    table = Invoices(results)
+    table1 = Invoices(results)
 
-    return render_template('index.html', table = table)
+    qry = db_session.query(Item)
+    results = qry.all()
+    table2 = Items(results)
+
+    return render_template('index.html', table1 = table1, table2 = table2)
 
 
 @app.route('/add_product', methods=['GET', 'POST'])
@@ -72,7 +76,7 @@ def new_client():
 def save_client_changes(client, form, new=False):
 
     """
-    Helper function to commit client information to databae.
+    Helper function to commit client information to database.
     -----
     Parameters: Type
     client - Client
@@ -103,12 +107,55 @@ def new_invoice():
     invoice = Invoice()
     invoice_id = invoice.invoice_id
 
-    if request.method == 'POST' and request.form['btn'] == 'Save':
-        save_invoice_changes(invoice, invoice_form, new=True)
+    if request.method == 'POST':
+        invoice.client_name = request.form['client_name']
+        invoice.issue_date = request.form['issue_date']
+        invoice.due_date = request.form['due_date']
+        total = 0
+        qry = db_session.query(Item).filter(Item.invoice_id == invoice.invoice_id)
+        for i in qry:
+            total += i.total_price
+        invoice.amount_bt = total
+        invoice.amount_at = round(float(invoice.amount_bt) * 1.2, 2)
+
+        db_session.add(invoice)
+        db_session.commit()
         return redirect('/')
 
-    return render_template('add_invoice.html', invoice_form = invoice_form,
-                            invoice_id = invoice_id)
+    return render_template('add_invoice.html', invoice_id = invoice_id)
+
+
+@app.route('/process', methods=['GET', 'POST'])
+def process():
+    """
+    Adds new item to the product table.
+    -----
+    Invoice ID is taken from the html and multiple Items
+    can be created for that invoice.
+
+    """
+    item = Item()
+    invoice_id = request.form['invoice_id']
+    product = request.form['product']
+    quantity = request.form['quantity']
+    #### To add ####
+    #if statement to check price is none and if so pull stock price from db
+    item_price = request.form['price']
+    total_price = round(float(quantity)*float(item_price))
+    print(invoice_id, product, quantity, item_price)
+    item.invoice_id = invoice_id
+    item.item = product
+    item.quantity = quantity
+    item.item_price = item_price
+    item.total_price = total_price
+    db_session.add(item)
+    db_session.commit()
+
+    qry = db_session.query(Item).filter(Item.invoice_id == invoice_id)
+    results = qry.all()
+    table = Items(results)
+
+    return jsonify(table = table)
 
 def save_invoice_changes(invoice, form, new=False):
 
@@ -139,36 +186,6 @@ def save_invoice_changes(invoice, form, new=False):
         db_session.add(invoice)
 
     db_session.commit()
-
-
-@app.route('/process', methods=['POST'])
-def process():
-    """
-    Adds new item to the product table.
-    -----
-    Invoice ID is taken from the html and multiple Items
-    can be created for that invoice.
-
-    """
-    item = Item()
-    invoice_id = request.form['invoice_id']
-    product = request.form['product']
-    quantity = request.form['quantity']
-    #### To add ####
-    #if statement to check price is none and if so pull stock price from db
-    item_price = request.form['price']
-    total_price = round(float(quantity)*float(item_price))
-
-    item.invoice_id = invoice_id
-    item.item = product
-    item.quantity = quantity
-    item.item_price = item_price
-    item.total_price = total_price
-    db_session.add(item)
-
-    db_session.commit()
-
-    return jsonify({'product' : 'product added'})
 
 
 @app.route('/edit_invoice/<int:id>', methods=['GET', 'POST'])
