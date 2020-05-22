@@ -1,5 +1,4 @@
 from app.app import app, db
-import uuid
 
 class Client(db.Model):
 
@@ -71,8 +70,9 @@ class Invoice(db.Model):
     invoice_id = db.Column(db.String)
 
     def __init__(self, client_name=None, issue_date=None,
-                due_date=None, amount_bt=None, amount_at=None):
-        self.invoice_id = str(uuid.uuid4())
+                due_date=None, amount_bt=None, amount_at=None,
+                invoice_id=None):
+        self.invoice_id = invoice_id
         self.client_name = client_name
         self.issue_date = issue_date
         self.due_date = due_date
