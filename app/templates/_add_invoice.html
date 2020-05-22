@@ -7,14 +7,15 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/datatable.css')}}">
     <title>Add Invoice</title>
   </head>
   <body>
     <div class="jumbotron">
     <h1>Add Invoice</h1>
-    <form class="form-inline" id="invoice">
-      <div class="dropdown" id = "clientName">
-        <select class="form-control form-control">
+    <form id="invoice">
+      <div class="dropdown">
+        <select class="form-control form-control-lg">
           <option>Acme Inc</option>
           <option>ABC Ltd</option>
           <option>AllViews Ltd</option>
@@ -26,44 +27,48 @@
         <input type="text" class="form-control" id="issueDate" placeholder="DD/MM/YYYY">
       </div>
       <div class="form-group">
-        <label class="sr-only" for="dueDate">Due Date</label>
+        <label class="sr-only" for="dueDate">product</label>
         <input type="text" class="form-control" id="dueDate" placeholder="DD/MM/YYYY">
       </div>
-      <button type="button" value="save" class="btn btn-primary btn">Save Invoice</button>
-
-      <br>
-
-      <div class="form-group">
-          <label class="sr-only" for="invoiceId">invoiceId</label>
-          <input type="text" class="form-control" id="invoiceId" value = "{{ invoice_id }}">
-        </div>
+      <button type="button" value="save" class="btn btn-primary btn-lg">Save Invoice</button>
+      </form>
+    </div>
+    
+    <div class="container">
+    	<br><br><br><br>
+    	<form class="form-inline" id="itemForm">
         <div class="form-group">
-          <label class="sr-only" for="productInput">product</label>
-          <input type="text" class="form-control" id="productInput" placeholder="Product">
-        </div>
-        <div class="form-group">
-          <label class="sr-only" for="quantityInput">quantity</label>
-          <input type="text" class="form-control" id="quantityInput" placeholder="Quantity">
-        </div>
+    	    <label class="sr-only" for="invoiceId">invoiceId</label>
+    	    <input type="text" class="form-control" id="invoiceId" value = "{{ invoice_id }}">
+    	  </div>
+    	  <div class="form-group">
+    	    <label class="sr-only" for="productInput">product</label>
+    	    <input type="text" class="form-control" id="productInput" placeholder="Product">
+    	  </div>
+    	  <div class="form-group">
+    	    <label class="sr-only" for="quantityInput">quantity</label>
+    	    <input type="text" class="form-control" id="quantityInput" placeholder="Quantity">
+    	  </div>
         <div class="form-group">
           <label class="sr-only" for="priceInput">price</label>
           <input type="text" class="form-control" id="priceInput" placeholder="Price">
         </div>
-        <button type="button" value="item" class="btn btn-primary btn">Add Item</button>
-      </form>
+    	  <button type="submit" name="item" class="btn btn-default">Submit</button>
+    	</form>
+    	<br>
     </div>
-
 
 
     <div class="container">
       <div id="resultsTable">
-        {{table}}
+
       </div>
     </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script type=text/javascript src="{{url_for('static', filename='jquery.js')}}"></script>
-    <script type=text/javascript src="{{url_for('static', filename='js/form.js')}}"></script>
+    <script type=text/javascript src="{{url_for('static', filename='datatables.js')}}"></script>
+    <script type=text/javascript src="{{url_for('static', filename='js/index.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   </body>
