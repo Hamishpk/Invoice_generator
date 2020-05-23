@@ -15,7 +15,9 @@ def index():
     """Displays home screen invoice table"""
     qry_invoices = db_session.query(Invoice)
     results = qry_invoices.all()
-    table = Invoices(results)
+    table = Invoices(results, table_id = "resultsTable",
+                         classes=["display"])
+
 
     return render_template('index.html', table = table)
 
@@ -24,9 +26,6 @@ def index():
 def new_invoice():
     """
     Loads form to create new invoice.
-    -----
-    CURRENTLY NEEDS MODIFYING ONCE FRONT END IS COMPLETE
-    -----
     """
     invoice_id = str(uuid.uuid4())
 
