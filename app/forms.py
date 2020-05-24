@@ -18,7 +18,7 @@ class InvoiceForm(Form):
                 ('Barton Smith Ltd', 'Barton Smith Ltd')]
 
 
-    client_name = SelectField(choices = clients)
+    client_name = StringField('client_name')
     issue_date = StringField('issue_date')
     due_date = StringField('due_date')
 

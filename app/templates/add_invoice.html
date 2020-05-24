@@ -13,42 +13,43 @@
   <body>
     <div class="jumbotron">
     <h1>Add Invoice</h1>
-    <form class="form-inline" id="invoice">
-      <div class="form-group">
-        <label class="sr-only" for="clientName">Client Name</label>
-        <input type="text" class="form-control" id="clientName" placeholder="Client Name">
-      </div>
-      <div class="form-group">
-        <label class="sr-only" for="issueDate">Issue Date</label>
-        <input type="text" class="form-control" id="issueDate" placeholder="DD/MM/YYYY">
-      </div>
-      <div class="form-group">
-        <label class="sr-only" for="dueDate">Due Date</label>
-        <input type="text" class="form-control" id="dueDate" placeholder="DD/MM/YYYY">
-      </div>
+    <form id="invoice">
       <button type="button" value="save" class="btn btn-primary btn">Save Invoice</button>
-
-      <div hidden class="form-group">
+      <div class="form-row">
+        <div class="col-md-3 mb-3">
+          <label for="clientName">Client name</label>
+          <input type="text" class="form-control" id="clientName" placeholder="Client name" required>
+        </div>
+        <div class="col-md-2 mb-3">
+          <label for="issueDate">Issue Date</label>
+          <input type="text" class="form-control" id="issueDate" placeholder="DD/MM/YYYY" required>
+        </div>
+        <div class="col-md-2 mb-3">
+          <label for="Duedate">Due Date</label>
+            <input type="text" class="form-control" id="dueDate" placeholder="DD/MM/YYYY" aria-describedby="inputGroupPrepend2" required>
+          </div>
+        </div>
+        <div hidden class="form-group">
           <label class="sr-only" for="invoiceId">invoiceId</label>
           <input type="text" class="form-control" id="invoiceId" value = "{{ invoice_id }}">
+      </div>
+      <div class="form-row">
+        <div class="col-md-3 mb-3">
+          <label for="productInput">Product</label>
+          <input type="text" class="form-control" id="productInput" placeholder="Product" required>
         </div>
-        <div class="form-group">
-          <label class="sr-only" for="productInput">product</label>
-          <input type="text" class="form-control" id="productInput" placeholder="Product">
+        <div class="col-md-2 mb-3">
+          <label for="quantityInput">Quantity</label>
+          <input type="text" class="form-control" id="quantityInput" placeholder="Quantity" required>
         </div>
-        <div class="form-group">
-          <label class="sr-only" for="quantityInput">quantity</label>
-          <input type="text" class="form-control" id="quantityInput" placeholder="Quantity">
+        <div class="col-md-2 mb-3">
+          <label for="priceInput">Price</label>
+          <input type="text" class="form-control" id="priceInput" placeholder="Price" required>
         </div>
-        <div class="form-group">
-          <label class="sr-only" for="priceInput">price</label>
-          <input type="text" class="form-control" id="priceInput" placeholder="Price">
-        </div>
-        <button type="button" value="item" class="btn btn-primary btn">Add Item</button>
-      </form>
+      </div>
+      <button type="button" value="item" class="btn btn-primary btn">Add Item</button>
+    </form>
     </div>
-
-
 
     <div class="container">
       <div id="resultsTable">
@@ -58,9 +59,9 @@
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script type=text/javascript src="{{url_for('static', filename='jquery.js')}}"></script>
-      <script type=text/javascript src="{{url_for('static', filename='datatables.js')}}"></script>
-    <script type=text/javascript src="{{url_for('static', filename='js/form.js')}}"></script>
+    <script type=text/javascript src="{{url_for('static', filename='datatables.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script type=text/javascript src="{{url_for('static', filename='js/form.js')}}"></script>
   </body>
 </html>

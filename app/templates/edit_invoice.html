@@ -1,19 +1,67 @@
-<doctype html>
-  <title> Invoice Generator - New Invoice</title>
-  <h2> New Invoice </h2>
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <form method="get">
-    <dl>
-    <p> Invoice ID: {{ invoice_id }} </p>
-    </dl>
-  </form>
-  <form  method = "post" name="clientForm">
-      <dl>
-        {{ form.client_name }}
-        {{ form.issue_date }}
-        {{ form.due_date }}
-      </dl>
-      <p><input type=submit name="btn" value="Save">
-  </form>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/datatable.css')}}">
+    <title>Add Invoice</title>
+  </head>
+  <body>
+    <div class="jumbotron">
+    <h1>Edit Invoice</h1>
+    <form id="invoice" method="get">
+      <button type="button" value="save" class="btn btn-primary btn">Save Invoice</button>
+      <div class="form-row">
+        <div class="col-md-3 mb-3">
+          <label for="clientName">Client name</label>
+          <input type="text" class="form-control" id="clientName" value="{{ client_name }}">
+        </div>
+        <div class="col-md-2 mb-3">
+          <label for="issueDate">Issue Date</label>
+          <input type="text" class="form-control" id="issueDate" value="{{ issue_date }}">
+        </div>
+        <div class="col-md-2 mb-3">
+          <label for="Duedate">Due Date</label>
+            <input type="text" class="form-control" id="dueDate" value="{{ due_date }}">
+          </div>
+        </div>
+        <div hidden class="form-group">
+          <label class="sr-only" for="invoiceId">invoiceId</label>
+          <input type="text" class="form-control" id="invoiceId" value="{{ invoice_id }}">
+      </div>
+      <div class="form-row">
+        <div class="col-md-3 mb-3">
+          <label for="productInput">Product</label>
+          <input type="text" class="form-control" id="productInput" placeholder="Product" required>
+        </div>
+        <div class="col-md-2 mb-3">
+          <label for="quantityInput">Quantity</label>
+          <input type="text" class="form-control" id="quantityInput" placeholder="Quantity" required>
+        </div>
+        <div class="col-md-2 mb-3">
+          <label for="priceInput">Price</label>
+          <input type="text" class="form-control" id="priceInput" placeholder="Price" required>
+        </div>
+      </div>
+      <button type="button" value="item" class="btn btn-primary btn">Add Item</button>
+    </form>
+    </div>
 
-  {{ table }}
+    <div class="container">
+      <div id="resultsTable">
+        {{table}}
+      </div>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script type=text/javascript src="{{url_for('static', filename='jquery.js')}}"></script>
+    <script type=text/javascript src="{{url_for('static', filename='datatables.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script type=text/javascript src="{{url_for('static', filename='js/edit_invoice.js')}}"></script>
+  </body>
+</html>
