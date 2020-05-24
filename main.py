@@ -82,35 +82,6 @@ def process():
 
     return jsonify(my_table = table.__html__())
 
-def save_invoice_changes(invoice, form, new=False):
-
-    """
-    Helper function to update information to database.
-    -----
-    Parameters: Type
-    invoice - Invoice
-    form - Invoiceform
-    new - Boolean
-    -----
-    Commits or updates line in invoice table
-    -----
-    Returns - Nothing
-    """
-
-    invoice.client_name = form.client_name.data
-    invoice.issue_date = form.issue_date.data
-    invoice.due_date = form.due_date.data
-    qry = db_session.query(Item).filter(Item.invoice_id == invoice.invoice_id)
-    total = 0
-    for i in qry:
-        total += i.total_price
-    invoice.amount_bt = total
-    invoice.amount_at = round(float(invoice.amount_bt) * 1.2, 2)
-
-    if new:
-        db_session.add(invoice)
-
-    db_session.commit()
 
 
 @app.route('/edit_invoice/<int:id>', methods=['GET', 'POST'])
@@ -131,12 +102,25 @@ def edit_invoice(id):
     table = Items(y)
 
     if invoice:
-        form = InvoiceForm(formdata=request.form, obj=invoice)
-        if request.method == 'POST' and form.validate():
-            save_invoice_changes(invoice, form)
+        if request.method == 'POST':
+            invoice.invoice_id = request.form['invoice_id']
+            invoice.client_name = request.form['client_name']
+            invoice.issue_date = request.form['issue_date']
+            invoice.due_date = request.form['due_date']
+            total = 0
+            qry = db_session.query(Item).filter(Item.invoice_id == invoice.invoice_id)
+            results = qry.all()
+            for i in results:
+                total += i.total_price
+            invoice.amount_bt = total
+            invoice.amount_at = round(float(invoice.amount_bt) * 1.2, 2)
+
+            db_session.commit()
             return redirect('/')
 
-    return render_template('edit_invoice.html', form=form, table = table)
+    return render_template('edit_invoice.html', client_name=invoice.client_name,
+                            issue_date=invoice.issue_date, due_date=invoice.due_date,
+                            table = table)
 
 @app.route('/edit_item/<int:id>', methods=['GET', 'POST'])
 def edit_item(id):
@@ -159,29 +143,6 @@ def edit_item(id):
 
     return render_template('edit_item.html', form=form)
 
-def save_item_changes(item, form, new=False):
-
-    """
-    Helper function to update information to database.
-    -----
-    Parameters: Type
-    item - Item
-    form - Itemform
-    new - Boolean
-    -----
-    Commits or updates line in item table
-    -----
-    Returns - Nothing
-    """
-    item.item = form.item.data
-    item.quantity = form.quantity.data
-    item.item_price = form.item_price.data
-    item.total_price = round(float(form.item_price.data) * float(form.quantity.data), 2)
-
-    if new:
-        db_session.add(item)
-
-    db_session.commit()
 
 @app.route('/view_invoice<int:id>', methods=['GET'])
 def view_invoice(id):
