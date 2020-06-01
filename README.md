@@ -12,15 +12,18 @@ I chose a SQLite database as it comes built in with Python, works well with SQLA
 
 ## Issues
 
-Currently the application has one major bug in the front end of the add invoice form. Originally I planned to have the front end built entirely from HTML using Jinja2 however the add invoice form requires single page submissions of invoices. Because of this I decided to use JQuery and AJAX to build a more robust front end, which I’m currently in the process of doing.
+Currently the application is a little messy whilst I play around with front end tools. As it stands you are able to add an invoice with multiple products and view that invoice. The edit invoice/item page need to be completed.
+
+For now I have decided to focus on adding, editing and viewing invoices. The back end has functionality to store clients and products. These have not been added to the front end yet.
 
 ## Road map
 
-1. Finish the add invoice form
-2. Add delete functions to all tables
+1. Finish the edit invoice form
+2. Add delete functions
 3. Add entry validators to all forms
-4. Add styling to the invoices created
-5. Include download to .pdf on all invoices
+4. Add client and product functions + drop down menus on forms
+5. Add styling to the invoices created
+6. Include download to .pdf on all invoices
 
 ## Local installation
 

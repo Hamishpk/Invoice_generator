@@ -101,26 +101,29 @@ def edit_invoice(id):
     y = qry1.all()
     table = Items(y)
 
-    if invoice:
-        if request.method == 'POST':
-            invoice.invoice_id = request.form['invoice_id']
-            invoice.client_name = request.form['client_name']
-            invoice.issue_date = request.form['issue_date']
-            invoice.due_date = request.form['due_date']
-            total = 0
-            qry = db_session.query(Item).filter(Item.invoice_id == invoice.invoice_id)
-            results = qry.all()
-            for i in results:
-                total += i.total_price
-            invoice.amount_bt = total
-            invoice.amount_at = round(float(invoice.amount_bt) * 1.2, 2)
-
-            db_session.commit()
-            return redirect('/')
-
     return render_template('edit_invoice.html', client_name=invoice.client_name,
                             issue_date=invoice.issue_date, due_date=invoice.due_date,
                             table = table)
+
+@app.route('/save_edit_invoice', methods=['POST'])
+def save_edit_invoice():
+    qry = db_session.query(Invoice).filter(
+    Invoice.invoice_id==request.form['invoice_id'])
+    invoice = qry.first()
+    invoice.invoice_id = request.form['invoice_id']
+    invoice.client_name = request.form['client_name']
+    invoice.issue_date = request.form['issue_date']
+    invoice.due_date = request.form['due_date']
+    total = 0
+    qry = db_session.query(Item).filter(Item.invoice_id == invoice.invoice_id)
+    results = qry.all()
+    for i in results:
+        total += i.total_price
+    invoice.amount_bt = total
+    invoice.amount_at = round(float(invoice.amount_bt) * 1.2, 2)
+
+    db_session.commit()
+    return redirect('/')
 
 @app.route('/edit_item/<int:id>', methods=['GET', 'POST'])
 def edit_item(id):
