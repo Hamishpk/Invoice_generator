@@ -11,7 +11,7 @@ $(document).ready(function(){
 				invoice_id : $('#invoiceId').val(),
       },
       type : 'POST',
-      url : '/edit_invoice'
+      url : '/save_edit_invoice'
     })
 		.done(function(data){
 			window.location = "/";
